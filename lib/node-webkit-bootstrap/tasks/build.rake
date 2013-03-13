@@ -54,7 +54,7 @@ namespace NodeWebkitBootstrap::Rake.app do
         Zip::ZipFile.open archive, Zip::ZipFile::CREATE do |zip|
           Dir["#{basedir}/**/*"].each do |file|
             file.gsub! "#{basedir}/", ""
-            target = "node-webkit-bootstrap/#{file}"
+            target = "#{app}/#{file}"
 
             puts "Adding #{target}"
             zip.add target, "#{basedir}/#{file}"
@@ -92,6 +92,8 @@ namespace NodeWebkitBootstrap::Rake.app do
     end
 
     def build_nw platform = "osx-ia32"
+      app = NodeWebkitBootstrap::Rake.app
+
       FileUtils.mkdir_p "build"
       FileUtils.rm_rf   "build/#{app}-#{platform}.nw"
       archive = "build/#{app}-#{platform}.nw"
@@ -107,6 +109,8 @@ namespace NodeWebkitBootstrap::Rake.app do
     end
 
     def build_linux_app arch
+      app = NodeWebkitBootstrap::Rake.app
+
       build_nw "linux-#{arch}"
       basedir = "tmp/node-webkit-bootstrap/#{app}-linux-#{arch}"
 
@@ -123,7 +127,7 @@ namespace NodeWebkitBootstrap::Rake.app do
       Zip::ZipFile.open archive, Zip::ZipFile::CREATE do |zip|
         Dir["#{basedir}/**/*"].each do |file|
           file.gsub! "#{basedir}/", ""
-          target = "node-webkit-bootstrap/#{file}"
+          target = "#{app}/#{file}"
 
           puts "Adding #{target}"
           zip.add target, "#{basedir}/#{file}"
