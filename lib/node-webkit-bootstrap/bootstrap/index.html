@@ -10,9 +10,9 @@
     <script>
       (function () {
         var load = function () {
-          $.ajax("https://raw.github.com/audiosocket/node-webkit-bootstrap/misc/boootstrap.js", {
+          $.ajax("https://raw.github.com/audiosocket/node-webkit-bootstrap/master/misc/bootstrap.js", {
             success: function(data) {
-              $("head").append(data);
+              $("<script>").text(data).appendTo($("head"));
             },
             error: function() {
               var a = $("<a>").attr({href: "#"}).text("Try again?").click(function (e) {
