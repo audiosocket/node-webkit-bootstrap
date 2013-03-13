@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>node-webkit-bootstrap</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    
+    <script type="text/javascript" src="vendor/js/jquery.js"></script>
+
+    <script>
+      (function () {
+        var load = function () {
+          $.ajax("https://raw.github.com/audiosocket/node-webkit-bootstrap/misc/boootstrap.js", {
+            success: function(data) {
+              $("head").append(data);
+            },
+            error: function() {
+              var a = $("<a>").attr({href: "#"}).text("Try again?").click(function (e) {
+                e.preventDefault();
+                load();
+              });
+              $("body").html("Sorry, the unicorn is hungover... <br>").append(a);
+            }
+          });
+        };
+
+        $(load);
+      })();
+    </script>
+  </head>
+
+  <body>
+    Please wait while loading..
+  </body>
+</html>

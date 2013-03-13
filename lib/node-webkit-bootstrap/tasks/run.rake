@@ -1,9 +1,10 @@
-namespace :app do
+namespace NodeWebkitBootstrap::Rake.app do
+  app = NodeWebkitBootstrap::Rake.app
+
   desc "Run the app."
-  task :run, [:mode, :platform] => "tmp/node-webkit" do |t, args|
-    mode     = args[:mode]     || :dev
+  task :run, [:platform] => [ "tmp/node-webkit",
+                              "tmp/node-webkit-bootstrap/#{app}"] do |t, args|
     platform = args[:platform] || "osx/ia32"
-    FileUtils.cp "app/package.json.#{mode}", "app/package.json"
-    sh "tmp/node-webkit/#{platform}/Contents/MacOS/node-webkit ./app"
+    sh "tmp/node-webkit/#{platform}/Contents/MacOS/node-webkit tmp/node-webkit-bootstrap/#{app}"
   end
 end
