@@ -26,5 +26,7 @@ namespace NodeWebkitBootstrap::Rake.app do
     File.open "#{basedir}/package.json", "w" do |file|
       file.write JSON.pretty_generate(package)
     end
+
+    sh "touch tmp/node-webkit-bootstrap/#{app}-run"
   end
 end

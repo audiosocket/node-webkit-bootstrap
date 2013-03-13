@@ -14,14 +14,33 @@ namespace NodeWebkitBootstrap::Rake.app do
       win:    [:ia32] }
   end
 
+  def vendor_dirs platform, arch
+    here = File.expand_path "..", __FILE__
+
+    [ "#{here}/../vendor/#{platform}/#{arch}",
+      # This one is for the app itself. 
+      "vendor/node-webkit-bootstrap/#{platform}/#{arch}" ]
+  end
+
+  def vendor_deps
+    nw_targets.map do |platform, archs|
+      archs.map do |arch|
+        vendor_dirs(platform,arch).map do |dir|
+          Dir["#{dir}/**/*"]
+        end.flatten
+      end.flatten
+    end.flatten
+  end
+
   desc "Download latest node-webkit code (default version: #{nw_version})."
   task :download, [:version] do |t, args|
     version = args[:version] || nw_version
     download_nw version 
   end
 
-  file "tmp/node-webkit" do
+  file "tmp/node-webkit" => vendor_deps do
     download_nw
+    sh "touch tmp/node-webkit"
   end
 
   def download_nw version = nw_version
@@ -88,13 +107,7 @@ namespace NodeWebkitBootstrap::Rake.app do
           end
         end
 
-        here      = File.expand_path "..", __FILE__
-        vendordirs = [
-          "#{here}/../vendor/#{platform}/#{arch}",
-          "vendor/node-webkit-bootstrap/#{platform}/#{arch}" # This one is for the app itself.
-        ]
-        
-        vendordirs.each do |vendordir|
+        vendor_dirs(platform,arch).each do |vendordir|
           if File.exists? vendordir
             Dir["#{vendordir}/**/*"].each do |file|
               next if File.directory? file
