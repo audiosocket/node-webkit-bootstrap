@@ -8,7 +8,7 @@ namespace NodeWebkitBootstrap::Rake.app do
 
   desc "Build #{app} (platform is one of: \"win\", \"linux\", \"osx\" or \"all\", default: \"all\")."
   task :build, [:platform] => ["tmp/node-webkit-bootstrap/#{app}-build", "tmp/node-webkit"] do |t, args|
-    platform = args[:patform] || "all"
+    platform = args[:platform] || "all"
 
     if platform == "osx" or platform == "all"
       build_osx
