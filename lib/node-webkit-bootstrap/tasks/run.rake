@@ -1,18 +1,28 @@
+require "rbconfig"
+
 namespace NodeWebkitBootstrap::Rake.app do
   app     = NodeWebkitBootstrap::Rake.app
   package = NodeWebkitBootstrap::Rake.run_package 
   path    = NodeWebkitBootstrap::Rake.path
 
-  desc "Run #{app} (platform either \"linux/{x64,ia32}\" or \"osx/ia32\", default: \"osx/ia32\")."
-  task :run, [:platform] => [ "tmp/node-webkit",
-                              "tmp/node-webkit-bootstrap/#{app}-run"] do |t, args|
-    platform = args[:platform] || "osx/ia32"
-    
-    if platform == "osx/ia32"
-      path = "tmp/node-webkit/#{platform}/Contents/MacOS/node-webkit"
-    else
-      path = "tmp/node-webkit/#{platform}/nw"
+  desc "Run #{app}."
+  task :run => [ "tmp/node-webkit",
+                 "tmp/node-webkit-bootstrap/#{app}-run"] do
+    case RbConfig::CONFIG["target_os"]
+      when /darwin/i
+        path = "tmp/node-webkit/osx/ia32/Contents/MacOS/node-webkit"
+      when /mswin|mingw/i
+        path = "tmp/node-webkit/win/ia32/nw.exe"
+      when /linux/i
+        case RbConfig::CONFIG["target_cpu"]
+          when "x86_64"
+            path = "tmp/node-webkit/linux/x64/nw"
+          when "x86"
+            path = "tmp/node-webkit/linux/ia32/nw"
+        end
     end
+
+    raise "Unsupported platform!" unless path
 
     sh "#{path} tmp/node-webkit-bootstrap/#{app}-run"
   end
