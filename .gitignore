@@ -1,0 +1,6 @@
+.rbenv-version
+/tmp/
+/build/
+/pkg/
+Gemfile.lock
+*.sw*
