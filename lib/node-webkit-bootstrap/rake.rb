@@ -10,7 +10,8 @@ module NodeWebkitBootstrap
       include DSL
 
       attr_accessor :app
-      attr_accessor :package
+      attr_accessor :run_package
+      attr_accessor :build_package
       attr_accessor :path
     end
 
@@ -18,11 +19,21 @@ module NodeWebkitBootstrap
 
     @app = "node-webkit-bootstrap"
 
-    @package = {
+    @run_package = {
       name: @app,
       main: "index.html",
       window: {
         toolbar: true,
+        width:   660,
+        height:  500
+      }
+    }
+
+    @build_package = {
+      name: @app,
+      main: "index.html",
+      window: {
+        toolbar: false,
         width:   660,
         height:  500
       }
