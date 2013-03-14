@@ -36,6 +36,9 @@ namespace NodeWebkitBootstrap::Rake.app do
     File.open "#{basedir}/package.json", "w" do |file|
       file.write JSON.pretty_generate(package)
     end
+    if package[:dependencies]
+      sh "which npm && cd tmp/node-webkit-bootstrap/#{app}-build && npm install --production"
+    end
 
     sh "touch tmp/node-webkit-bootstrap/#{app}-run"
   end
