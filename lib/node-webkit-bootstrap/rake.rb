@@ -84,7 +84,7 @@ module NodeWebkitBootstrap
     def self.vendor_dirs platform, arch
       here = File.expand_path "..", __FILE__
 
-      [ "#{here}/../vendor/node-webkit/#{platform}/#{arch}",
+      [ "#{here}/vendor/node-webkit/#{platform}/#{arch}",
         # This one is for the app itself.
         "vendor/node-webkit-bootstrap/node-webkit/#{platform}/#{arch}" ]
     end
