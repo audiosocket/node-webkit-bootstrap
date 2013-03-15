@@ -89,7 +89,7 @@ rake my-awesome-app:test               # Run my-awesome-task tests.
 
 ### Downloading node-webkit
 
-The `download` task fetches `node-webkit` binaries and create a `tmp/node-webkit/#{platform}/#{arch}`. 
+The `download` task fetches `node-webkit` binaries and create various `tmp/node-webkit/#{platform}/#{arch}`. 
 Available platforms and architectures are:
 ```
 # format: platform => [architectures]
