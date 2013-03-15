@@ -77,7 +77,7 @@ module NodeWebkitBootstrap
 
     def self.nw_targets
       { linux:  [:ia32, :x64],
-        osx: [:ia32],
+        osx:    [:ia32],
         win:    [:ia32] }
     end
 
