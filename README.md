@@ -7,7 +7,7 @@ and testing your [node-webkit](https://github.com/rogerwang/node-webkit) applica
 How to use?
 -----------
 
-`node-webkit-gem` provides a set of `rake` tasks that automatize the following tasks:
+`node-webkit-bootstrap` provides a set of `rake` tasks that automatize the following tasks:
 * Downloading `node-webkit`
 * Preparing a runtime directory
 * Bundling a stand-alone version of your app
