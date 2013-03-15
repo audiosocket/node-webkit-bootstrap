@@ -1,7 +1,7 @@
 Node-webkit-bootstrap
 =====================
 
-The `node-webkit-gem` Ruby gem provides a framework for bootstraping, running, building
+This Ruby gem provides a framework for bootstraping, running, building
 and testing your [node-webkit](https://github.com/rogerwang/node-webkit) applications.
 
 How to use?
