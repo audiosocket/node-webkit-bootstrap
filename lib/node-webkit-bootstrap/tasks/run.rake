@@ -1,13 +1,31 @@
 require "rbconfig"
 
 namespace NodeWebkitBootstrap::Rake.app do
-  app     = NodeWebkitBootstrap::Rake.app
-  package = NodeWebkitBootstrap::Rake.run_package 
-  path    = NodeWebkitBootstrap::Rake.path
+  app       = NodeWebkitBootstrap::Rake.app
+  app_path  = NodeWebkitBootstrap::Rake.app_path
+  test_path = NodeWebkitBootstrap::Rake.test_path
 
   desc "Run #{app}."
   task :run => [ "tmp/node-webkit",
                  "tmp/node-webkit-bootstrap/#{app}-run"] do
+    run_app app, :run
+  end
+
+  desc "Run #{app} tests."
+  task :test => [ "tmp/node-webkit",
+                 "tmp/node-webkit-bootstrap/#{app}-test"] do
+    run_app app, :test
+  end
+
+  file "tmp/node-webkit-bootstrap/#{app}-run" => FileList["#{app_path}/**/*"] do
+    NodeWebkitBootstrap::Rake.build_runtime app, app_path, :run
+  end
+
+  file "tmp/node-webkit-bootstrap/#{app}-test" => FileList["#{test_path}/**/*"] do
+    NodeWebkitBootstrap::Rake.build_runtime app, test_path, :test
+  end
+
+  def run_app app, mode
     case RbConfig::CONFIG["target_os"]
       when /darwin/i
         path = "tmp/node-webkit/osx/ia32/Contents/MacOS/node-webkit"
@@ -24,22 +42,6 @@ namespace NodeWebkitBootstrap::Rake.app do
 
     raise "Unsupported platform!" unless path
 
-    sh "#{path} tmp/node-webkit-bootstrap/#{app}-run"
-  end
-
-  file "tmp/node-webkit-bootstrap/#{app}-run" => FileList["#{path}/**/*"] do
-    basedir = "tmp/node-webkit-bootstrap/#{app}-run"
-
-    FileUtils.rm_rf   basedir
-    FileUtils.mkdir_p basedir
-    FileUtils.cp_r    FileList["#{path}/**/*"], basedir
-    File.open "#{basedir}/package.json", "w" do |file|
-      file.write JSON.pretty_generate(package)
-    end
-    if package[:dependencies]
-      sh "which npm && cd tmp/node-webkit-bootstrap/#{app}-build && npm install --production"
-    end
-
-    sh "touch tmp/node-webkit-bootstrap/#{app}-run"
+    sh "#{path} tmp/node-webkit-bootstrap/#{app}-#{mode}"
   end
 end

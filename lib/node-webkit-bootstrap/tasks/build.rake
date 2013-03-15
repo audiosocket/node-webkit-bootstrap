@@ -2,46 +2,31 @@ require "json"
 require "zip/zip"
 
 namespace NodeWebkitBootstrap::Rake.app do
-  app     = NodeWebkitBootstrap::Rake.app
-  package = NodeWebkitBootstrap::Rake.build_package
-  path    = NodeWebkitBootstrap::Rake.path
+  app  = NodeWebkitBootstrap::Rake.app
+  path = NodeWebkitBootstrap::Rake.app_path
 
   desc "Build #{app} (platform is one of: \"win\", \"linux\", \"osx\" or \"all\", default: \"all\")."
   task :build, [:platform] => ["tmp/node-webkit-bootstrap/#{app}-build", "tmp/node-webkit"] do |t, args|
     platform = args[:platform] || "all"
 
     if platform == "osx" or platform == "all"
-      build_osx
+      build_osx app
     end
     if platform == "win" or platform == "all"
-      build_win
+      build_win app
     end
     if platform == "linux" or platform == "all"
-      build_linux :ia32
-      build_linux :x64
+      build_linux app, :ia32
+      build_linux app, :x64
     end
   end
 
   file "tmp/node-webkit-bootstrap/#{app}-build" => FileList["#{path}/**/*"] do
-    basedir = "tmp/node-webkit-bootstrap/#{app}-build"
-
-    FileUtils.rm_rf   basedir
-    FileUtils.mkdir_p basedir
-    FileUtils.cp_r    FileList["#{path}/**/*"], basedir
-    File.open "#{basedir}/package.json", "w" do |file|
-      file.write JSON.pretty_generate(package)
-    end
-    if package[:dependencies]
-      sh "which npm && cd tmp/node-webkit-bootstrap/#{app}-build && npm install --production"
-    end
-
-    sh "touch tmp/node-webkit-bootstrap/#{app}-build"
+    NodeWebkitBootstrap::Rake.build_runtime app, path, :build 
   end
 
-  def build_osx
-    app = NodeWebkitBootstrap::Rake.app
-
-    build_nw "osx-ia32"
+  def build_osx app
+    build_nw app, :osx, :ia32
     basedir = "tmp/node-webkit-bootstrap/#{app}-osx-ia32"
 
     FileUtils.rm_rf basedir
@@ -63,10 +48,8 @@ namespace NodeWebkitBootstrap::Rake.app do
     end
   end
 
-  def build_win
-    app = NodeWebkitBootstrap::Rake.app
-
-    build_nw "win-ia32"
+  def build_win app
+    build_nw app, :win, :ia32
     basedir = "tmp/node-webkit-bootstrap/#{app}-win-ia32"
 
     FileUtils.rm_rf   basedir
@@ -88,28 +71,29 @@ namespace NodeWebkitBootstrap::Rake.app do
       end
     end
   end
-
-  def build_nw platform = "osx-ia32"
-    app = NodeWebkitBootstrap::Rake.app
+ 
+  def build_nw app, platform, arch
+    archive = "build/#{app}-#{platform}-#{arch}.nw"
 
     FileUtils.mkdir_p "build"
-    FileUtils.rm_rf   "build/#{app}-#{platform}.nw"
-    archive = "build/#{app}-#{platform}.nw"
+    FileUtils.rm_rf   archive
 
     puts "Creating #{archive}"
     Zip::ZipFile.open archive, Zip::ZipFile::CREATE do |zip|
       FileList["tmp/node-webkit-bootstrap/#{app}-build/**/*"].each do |file|
         target = file.sub("tmp/node-webkit-bootstrap/#{app}-build/","")
+
+        # Filter app platform-specific vendor stuff.
+        next if target.match "vendor/arch" and not target.match "vendor/arch/#{platform}/#{arch}"
+
         puts "Adding #{target}"
         zip.add target, file
       end
     end
   end
 
-  def build_linux arch
-    app = NodeWebkitBootstrap::Rake.app
-
-    build_nw "linux-#{arch}"
+  def build_linux app, arch
+    build_nw app, :linux, arch
     basedir = "tmp/node-webkit-bootstrap/#{app}-linux-#{arch}"
 
     FileUtils.rm_rf   basedir

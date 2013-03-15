@@ -17,9 +17,9 @@ namespace NodeWebkitBootstrap::Rake.app do
   def vendor_dirs platform, arch
     here = File.expand_path "..", __FILE__
 
-    [ "#{here}/../vendor/#{platform}/#{arch}",
+    [ "#{here}/../vendor/node-webkit/#{platform}/#{arch}",
       # This one is for the app itself. 
-      "vendor/node-webkit-bootstrap/#{platform}/#{arch}" ]
+      "vendor/node-webkit-bootstrap/node-webkit/#{platform}/#{arch}" ]
   end
 
   def vendor_deps
