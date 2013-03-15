@@ -1,4 +1,5 @@
 require "curb"
+require "json"
 require "rake"
 require "rbconfig"
 require "rubygems/package"
