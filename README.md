@@ -77,7 +77,7 @@ NodeWebkitBootstrap::Rake.register do |config|
 end
 ```
 
-This will configure the following rake tasks:
+This configures the following rake tasks:
 ```
 % rake -T
 (...)
@@ -89,8 +89,8 @@ rake my-awesome-app:test               # Run my-awesome-task tests.
 
 ### Downloading node-webkit
 
-The download task will download `node-webkit` binaries for all available architectures and create
-a `tmp/node-webkit/#{platform}/#{arch}`. Available architectures at the time of writing are:
+The `download` task fetches `node-webkit` binaries and create a `tmp/node-webkit/#{platform}/#{arch}`. 
+Available platforms and architectures are:
 ```
 # format: platform => [architectures]
 { linux:  [:ia32, :x64],
@@ -126,7 +126,104 @@ All the files from `node-webkit`'s archive are thus extracted and the `libfoo.so
 from the `vendor/node-webkit-bootstrap/node-webkit/osx/ia32` folder.
 
 All files placed in to a `vendor/node-webkit-bootstrap/node-webkit/#{platform}/#{arch}` folder
-will likewise be added to the corresponding `node-webkit`'s directory.
+will likewise be added to the corresponding `node-webkit`'s directory. You can use this directory
+to add all files you want to override from `node-webkit` upstream's files, such
+as for instance the OSX application package description files.
 
 Please note that, be default. `node-webkit-bootstrap` will vendor GPL versions of the `ffmpeg`
 library to gain proper multimedia playback.
+
+### Running your app
+
+Executing the `run` task runs your application files using the `node-webkit` binary 
+appropriate for your architecture:
+```
+% rake my-awesome-app:run
+touch tmp/node-webkit-bootstrap/my-awesome-app-run
+tmp/node-webkit/osx/ia32/Contents/MacOS/node-webkit tmp/node-webkit-bootstrap/my-awesome-app-run
+[35457:0315/152311:ERROR:renderer_main.cc(179)] Running without renderer sandbox
+(...)
+```
+The path to your app is given by `config.app_path` in your `Rakefile` above.
+
+### Building your app
+
+Executing the `build` task generates bundled versions of your application:
+```
+% rake my-awesome-app:build
+touch tmp/node-webkit-bootstrap/my-awesome-app-run
+Creating build/my-awesome-app-osx-ia32.nw
+Adding index.html
+Adding package.json
+Adding vendor
+Adding vendor/arch/osx/ia32
+Adding vendor/arch/osx/ia32/osx.js
+Adding vendor/js
+Adding vendor/js/jquery.js
+Creating build/my-awesome-app-osx-ia32.zip
+Adding my-awesome-app.app/Contents
+Adding my-awesome-app.app/Contents/Frameworks
+Adding my-awesome-app.app/Contents/Frameworks/node-webkit Framework.framework
+Adding my-awesome-app.app/Contents/Frameworks/node-webkit Framework.framework/Libraries
+Adding my-awesome-app.app/Contents/Frameworks/node-webkit Framework.framework/Libraries/ffmpegsumo.so
+(...)
+Adding my-awesome-app.app/Contents/Resources/app.nw
+Adding my-awesome-app.app/Contents/Resources/nw.icns
+(...)
+```
+
+As you can see, the task will first create a `build/my-awesome-app-osx-ia32.nw` archive.
+
+In the case where you app has a `vendor/arch` directory, the `nw` archive for a given 
+`platform` and `arch` only contains files under `vendor/arch/#{platform}/#{arch}`.
+You can use this option to vendor architecture-specific files inside the `nw` archive.
+
+Finally, the `nw` archive is bundled together, according to each platform's technique
+and a `build/my-awesome-app-#{platform}-#{arch}.zip` file is created that you should
+be able to distribute.
+
+### Testing
+
+Executing the `test` task works exactly as with the `run` task except that the files specified
+by `config.test_path` in your `Rakefile` are used instead of `config.app_path`. You can use
+this task to run your tests.
+
+### Server-side tests
+
+In the case where most of your application's code is delivered by a server, you can
+use `node-webkit-bootstrap` only for testing. 
+
+This is particularly useful because your app's code is likely to have node-specific code
+such as `require("os")` which cannot be properly tested without `node-webkit`.
+
+Similarly to the case of your app, you have to include `node-webkit-bootstrap` in your `Gemfile`.
+Then you add the following to your `Rakefile`:
+```
+% cat Rakefile
+(...)
+require "node-webkit-bootstrap/rake"
+
+NodeWebkitBootstrap::Rake.register ["test"] do |config|
+  config.app = "nw"
+  
+  here = File.expand_path "..", __FILE__
+  config.test_path = "#{here}/test" 
+  
+  config.test_package = {
+    name: config.app,
+    main: "index.html",
+    window: {
+      show: false
+    }
+  }
+end
+```
+
+In this case, `node-webkit-bootstrap` will only add a `test` task:
+```
+% rake -T
+(...)
+rake nw:test   # Run nw tests.
+```
+
+You can use this task to run your tests on the server side.
