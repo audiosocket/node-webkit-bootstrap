@@ -130,7 +130,7 @@ will likewise be added to the corresponding `node-webkit`'s directory. You can u
 to add all files you want to override from `node-webkit` upstream's files, such
 as for instance the OSX application package description files.
 
-Please note that, be default. `node-webkit-bootstrap` will vendor GPL versions of the `ffmpeg`
+Please note that, by default. `node-webkit-bootstrap` will vendor GPL versions of the `ffmpeg`
 library to gain proper multimedia playback.
 
 ### Running your app
@@ -139,12 +139,13 @@ Executing the `run` task runs your application files using the `node-webkit` bin
 appropriate for your architecture:
 ```
 % rake my-awesome-app:run
-touch tmp/node-webkit-bootstrap/my-awesome-app-run
+(...)
 tmp/node-webkit/osx/ia32/Contents/MacOS/node-webkit tmp/node-webkit-bootstrap/my-awesome-app-run
 [35457:0315/152311:ERROR:renderer_main.cc(179)] Running without renderer sandbox
 (...)
 ```
-The path to your app is given by `config.app_path` in your `Rakefile` above.
+The path to your app is given by `config.app_path` in your `Rakefile` above. Also, a 
+`package.json` file is generated using data from `config.run_package` in your `Rakefile`.
 
 ### Building your app
 
@@ -173,6 +174,8 @@ Adding my-awesome-app.app/Contents/Resources/nw.icns
 ```
 
 As you can see, the task will first create a `build/my-awesome-app-osx-ia32.nw` archive.
+Here again, a `package.json` file is generated using data from `config.build_package`
+in your `Rakefile`.
 
 In the case where you app has a `vendor/arch` directory, the `nw` archive for a given 
 `platform` and `arch` only contains files under `vendor/arch/#{platform}/#{arch}`.
@@ -185,15 +188,17 @@ be able to distribute.
 ### Testing
 
 Executing the `test` task works exactly as with the `run` task except that the files specified
-by `config.test_path` in your `Rakefile` are used instead of `config.app_path`. You can use
-this task to run your tests.
+by `config.test_path` in your `Rakefile` are used instead of `config.app_path`. Likewise, a `package.json`
+file is created using data from `config.test_package` in your `Rakefile`. 
+
+You can use this task to run your tests in a specific `node-webkit` testing app.
 
 ### Server-side tests
 
 In the case where most of your application's code is delivered by a server, you can
-use `node-webkit-bootstrap` only for testing. 
+also use `node-webkit-bootstrap` for testing it. 
 
-This is particularly useful because your app's code is likely to have node-specific code
+This is particularly useful because in this case your app's code is likely to have node-specific code
 such as `require("os")` which cannot be properly tested without `node-webkit`.
 
 Similarly to the case of your app, you have to include `node-webkit-bootstrap` in your `Gemfile`.
