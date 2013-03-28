@@ -21,7 +21,7 @@ Here is a typical layout:
 |-- Gemfile
 |-- Rakefile
 |-- app/{index.html, js/, ...}
-       |-- vemdor/arch/win/ia32/win.js
+       |-- vendor/arch/win/ia32/win.js
        |-- vendor/arch/osx/ia32/osx.js
 |-- vendor/node-webkit-bootstrap/node-webkit/win/ia32/foo.dll
 |-- vendor/node-webkit-bootstrap/node-webkit/osx/ia32/Contents/Frameworks/node-webkit Helper.app/Contents/MacOS/libfoo.so
