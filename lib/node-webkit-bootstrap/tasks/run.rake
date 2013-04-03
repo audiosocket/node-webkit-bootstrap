@@ -8,7 +8,7 @@ namespace NodeWebkitBootstrap::Rake.app do
     NodeWebkitBootstrap::Rake.run_app app, :run
   end
 
-  file "tmp/node-webkit-bootstrap/#{app}-run" => FileList["#{app_path}/**/*"] do
+  file "tmp/node-webkit-bootstrap/#{app}-run" => FileList["Rakefile", "#{app_path}/**/*"] do
     NodeWebkitBootstrap::Rake.build_runtime app, app_path, :run
   end
 end

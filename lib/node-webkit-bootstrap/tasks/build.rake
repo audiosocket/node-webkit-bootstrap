@@ -21,7 +21,7 @@ namespace NodeWebkitBootstrap::Rake.app do
     end
   end
 
-  file "tmp/node-webkit-bootstrap/#{app}-build" => FileList["#{path}/**/*"] do
+  file "tmp/node-webkit-bootstrap/#{app}-build" => FileList["Rakefile", "#{path}/**/*"] do
     NodeWebkitBootstrap::Rake.build_runtime app, path, :build 
   end
 
