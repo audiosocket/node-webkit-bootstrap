@@ -17,6 +17,7 @@ module NodeWebkitBootstrap
 
       attr_accessor :app
       attr_accessor :app_path
+      attr_accessor :nw_version
       attr_accessor :run_package
       attr_accessor :build_package
       attr_accessor :test_package
@@ -58,8 +59,9 @@ module NodeWebkitBootstrap
       }
     }
 
-    @app_path  = "#{@here}/bootstrap"
-    @test_path = "#{@here}/test"
+    @app_path   = "#{@here}/bootstrap"
+    @test_path  = "#{@here}/test"
+    @nw_version = "0.5.1"
 
     def self.register tasks = ["*"], &block
       yield self if block_given?
@@ -69,10 +71,6 @@ module NodeWebkitBootstrap
           import f 
         end
       end
-    end
-
-    def self.nw_version
-      "0.4.2"
     end
 
     def self.nw_targets

@@ -42,6 +42,7 @@ require "node-webkit-bootstrap/rake"
 
 NodeWebkitBootstrap::Rake.register do |config|
   config.app = "my-awesome-app"
+  config.nw_version = "0.5.1"
   
   here = File.expand_path "..", __FILE__
   config.app_path  = "#{here}/app"
