@@ -1,4 +1,4 @@
-namespace NodeWebkitBootstrap::Rake.app do
+NodeWebkitBootstrap::Rake.add_tasks do
   app       = NodeWebkitBootstrap::Rake.app
   test_path = NodeWebkitBootstrap::Rake.test_path
 

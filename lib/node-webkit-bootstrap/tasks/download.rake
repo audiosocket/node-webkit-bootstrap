@@ -1,4 +1,4 @@
-namespace NodeWebkitBootstrap::Rake.app do
+NodeWebkitBootstrap::Rake.add_tasks do
   desc "Download latest node-webkit code (default version: #{NodeWebkitBootstrap::Rake.nw_version})."
   task :download, [:version] do |t, args|
     version = args[:version] || NodeWebkitBootstrap::Rake.nw_version

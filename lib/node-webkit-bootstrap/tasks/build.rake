@@ -1,7 +1,7 @@
 require "json"
 require "zip/zip"
 
-namespace NodeWebkitBootstrap::Rake.app do
+NodeWebkitBootstrap::Rake.add_tasks do
   app  = NodeWebkitBootstrap::Rake.app
   path = NodeWebkitBootstrap::Rake.app_path
 

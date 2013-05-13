@@ -17,6 +17,7 @@ module NodeWebkitBootstrap
 
       attr_accessor :app
       attr_accessor :app_path
+      attr_accessor :rake_namespace
       attr_accessor :nw_version
       attr_accessor :run_package
       attr_accessor :build_package
@@ -27,6 +28,8 @@ module NodeWebkitBootstrap
     @here = File.expand_path "..", __FILE__
 
     @app = "node-webkit-bootstrap"
+
+    @rake_namespace = "node-webkit-bootstrap"
 
     @run_package = {
       name: @app,
@@ -240,5 +243,15 @@ module NodeWebkitBootstrap
 
       sh "#{path} tmp/node-webkit-bootstrap/#{app}-#{mode}"
     end
+
+    def self.add_tasks &block
+      if rake_namespace
+        namespace rake_namespace do
+          block.call
+        end
+      else
+        block.call
+      end
+    end 
   end
 end
