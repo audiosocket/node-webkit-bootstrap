@@ -241,7 +241,7 @@ module NodeWebkitBootstrap
 
       raise "Unsupported platform!" unless path
 
-      sh "#{path} tmp/node-webkit-bootstrap/#{app}-#{mode}"
+      sh "#{path} 'tmp/node-webkit-bootstrap/#{app}-#{mode}'"
     end
 
     def self.add_tasks &block

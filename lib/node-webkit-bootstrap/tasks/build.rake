@@ -54,7 +54,7 @@ NodeWebkitBootstrap::Rake.add_tasks do
 
     FileUtils.rm_rf   basedir
     FileUtils.cp_r    "tmp/node-webkit/win/ia32", basedir
-    sh "cat #{basedir}/nw.exe build/#{app}-win-ia32.nw > #{basedir}/#{app}.exe"
+    sh "cat '#{basedir}/nw.exe' 'build/#{app}-win-ia32.nw' > '#{basedir}/#{app}.exe'"
     FileUtils.rm      "#{basedir}/nw.exe"
 
     archive = "build/#{app}-win-ia32.zip"
@@ -98,7 +98,7 @@ NodeWebkitBootstrap::Rake.add_tasks do
 
     FileUtils.rm_rf   basedir
     FileUtils.cp_r    "tmp/node-webkit/linux/#{arch}", basedir
-    sh "cat #{basedir}/nw build/#{app}-linux-#{arch}.nw > #{basedir}/#{app}"
+    sh "cat '#{basedir}/nw' 'build/#{app}-linux-#{arch}.nw' > '#{basedir}/#{app}'"
     FileUtils.chmod   0755, "#{basedir}/#{app}"
     FileUtils.rm      "#{basedir}/nw"
 
