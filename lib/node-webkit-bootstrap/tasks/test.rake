@@ -1,4 +1,6 @@
 NodeWebkitBootstrap::Rake.add_tasks do
+  next if ENV["NODE_WEBKIT_BOOTSTRAP_NO_TESTS"]
+
   app       = NodeWebkitBootstrap::Rake.app
   test_path = NodeWebkitBootstrap::Rake.test_path
 
