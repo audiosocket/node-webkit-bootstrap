@@ -207,7 +207,13 @@ module NodeWebkitBootstrap
           package = NodeWebkitBootstrap::Rake.run_package
         when :test
           package = NodeWebkitBootstrap::Rake.test_package
-       end
+      end
+
+      # If package[:main] is not a string, treat
+      # it as a proc and pass it the application path
+      unless package[:main].kind_of? String
+        package[:main] = package[:main].call basedir
+      end
 
       File.open "#{basedir}/package.json", "w" do |file|
         file.write JSON.pretty_generate(package)

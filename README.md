@@ -234,3 +234,33 @@ rake nw:test   # Run nw tests.
 ```
 
 You can use this task to run your tests on the server side.
+
+### Dynamically generated main
+
+You can also dynamically generate your application's main pages. This is particularly
+useful if, for instance, some URIs in the page are different whether you are in production
+(`build`) or development (`run`).
+
+When declaring the `package` variables in `Rakefile`, you can also pass a `lambda`
+for the main file, in which case, this `lambda` will the executed with the destination
+path as its first argument. It should write this file at destination path and return
+the file's name. 
+
+For instance:
+```
+  build_main =
+    lambda do |path|
+      filename = "#{path}/index.html"
+
+      File.open filename, "w" do |file|
+        file.write content
+      end
+
+      "index.html"
+    end
+
+  config.build_package = {
+    name: "My Awesome App",
+    main: build_main,
+    ...
+```
