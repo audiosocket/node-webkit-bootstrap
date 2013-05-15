@@ -219,10 +219,10 @@ module NodeWebkitBootstrap
         file.write JSON.pretty_generate(package)
       end
       if package[:dependencies]
-        sh "which npm && cd tmp/node-webkit-bootstrap/#{app}-build && npm install --production"
+        sh "which npm && cd 'tmp/node-webkit-bootstrap/#{app}-build' && npm install --production"
       end
 
-      sh "touch tmp/node-webkit-bootstrap/#{app}-#{mode}"
+      sh "touch 'tmp/node-webkit-bootstrap/#{app}-#{mode}'"
     end
 
     file "tmp/node-webkit" => vendor_deps do
