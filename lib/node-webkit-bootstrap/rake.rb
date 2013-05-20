@@ -17,6 +17,7 @@ module NodeWebkitBootstrap
 
       attr_accessor :app
       attr_accessor :app_path
+      attr_accessor :build_deps
       attr_accessor :rake_namespace
       attr_accessor :nw_version
       attr_accessor :run_package
@@ -30,6 +31,8 @@ module NodeWebkitBootstrap
     @app = "node-webkit-bootstrap"
 
     @rake_namespace = "node-webkit-bootstrap"
+
+    @build_deps = []
 
     @run_package = {
       name: @app,

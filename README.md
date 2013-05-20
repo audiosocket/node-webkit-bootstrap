@@ -264,3 +264,10 @@ For instance:
     main: build_main,
     ...
 ```
+
+Finally, if you need to tell `node-webkit-bootstrap` of new dependencies when building runtime, build
+or test, you can add rake tasks files dependencies to `config.build_deps`, for instance here:
+
+```
+  config.build_deps = ["/path/to/template/for/index.html"]
+```

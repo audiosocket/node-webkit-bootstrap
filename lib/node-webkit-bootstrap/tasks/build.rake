@@ -2,8 +2,9 @@ require "json"
 require "zip/zip"
 
 NodeWebkitBootstrap::Rake.add_tasks do
-  app  = NodeWebkitBootstrap::Rake.app
-  path = NodeWebkitBootstrap::Rake.app_path
+  app        = NodeWebkitBootstrap::Rake.app
+  build_deps = NodeWebkitBootstrap::Rake.build_deps
+  path       = NodeWebkitBootstrap::Rake.app_path
 
   desc "Build #{app} (platform is one of: \"win\", \"linux\", \"osx\" or \"all\", default: \"all\")."
   task :build, [:platform] => ["tmp/node-webkit-bootstrap/#{app}-build", "tmp/node-webkit"] do |t, args|
@@ -21,7 +22,7 @@ NodeWebkitBootstrap::Rake.add_tasks do
     end
   end
 
-  file "tmp/node-webkit-bootstrap/#{app}-build" => FileList["Rakefile", "#{path}/**/*"] do
+  file "tmp/node-webkit-bootstrap/#{app}-build" => FileList["Rakefile", "#{path}/**/*"].concat(build_deps) do
     NodeWebkitBootstrap::Rake.build_runtime app, path, :build 
   end
 
