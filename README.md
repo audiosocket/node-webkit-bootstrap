@@ -4,6 +4,11 @@ Node-webkit-bootstrap
 This Ruby gem provides a framework for bootstraping, running, building
 and testing your [node-webkit](https://github.com/rogerwang/node-webkit) applications.
 
+How to install?
+---------------
+
+Clone this repository, run `bundle install` and then `rake install` to add to your system. You can then add `node-webkit-bootstrap` to the Gemfile in your source repository, as described below.
+
 How to use?
 -----------
 
