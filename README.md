@@ -88,10 +88,10 @@ This configures the following rake tasks:
 ```
 % rake -T
 (...)
-rake my-awesome-app:build[platform]    # Build my-awesome-app (platform is one of: "win", "linux", "osx" or "all", default: "all").
-rake my-awesome-app:download[version]  # Download latest node-webkit code (default version: 0.4.2).
-rake my-awesome-app:run                # Run my-awesome-app.
-rake my-awesome-app:test               # Run my-awesome-app tests.
+rake nwapp:build[platform]    # Build my-awesome-app (platform is one of: "win", "linux", "osx" or "all", default: "all").
+rake nwapp:download[version]  # Download latest node-webkit code (default version: 0.4.2).
+rake nwapp:run                # Run my-awesome-app.
+rake nwapp:test               # Run my-awesome-app tests.
 ```
 
 ### Downloading node-webkit
